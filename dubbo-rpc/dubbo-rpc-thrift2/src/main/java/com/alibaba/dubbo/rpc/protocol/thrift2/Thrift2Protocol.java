@@ -5,6 +5,7 @@ import com.alibaba.dubbo.common.logger.Logger;
 import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.alibaba.dubbo.rpc.RpcException;
 import com.alibaba.dubbo.rpc.protocol.AbstractProxyProtocol;
+import org.apache.thrift.TException;
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.protocol.TCompactProtocol;
 import org.apache.thrift.protocol.TProtocol;
@@ -27,6 +28,10 @@ public class Thrift2Protocol extends AbstractProxyProtocol {
 
     public int getDefaultPort() {
         return DEFAULT_PORT;
+    }
+
+    public Thrift2Protocol() {
+        super(TException.class,RpcException.class);
     }
 
     @Override
