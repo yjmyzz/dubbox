@@ -11,6 +11,7 @@ import org.apache.avro.ipc.Server;
 import org.apache.avro.ipc.reflect.ReflectRequestor;
 import org.apache.avro.ipc.reflect.ReflectResponder;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 
 /**
@@ -20,6 +21,10 @@ import java.net.InetSocketAddress;
 public class AvroProtocol extends AbstractProxyProtocol {
     public static final int DEFAULT_PORT = 40881;
     private static final Logger logger = LoggerFactory.getLogger(AvroProtocol.class);
+
+    public AvroProtocol() {
+        super(IOException.class, RpcException.class);
+    }
 
     public int getDefaultPort() {
         return DEFAULT_PORT;

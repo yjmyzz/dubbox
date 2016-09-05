@@ -29,6 +29,14 @@
     <properties>
         <skip_maven_deploy>false</skip_maven_deploy>
     </properties>
+    
+    <distributionManagement>
+        <repository>
+            <id>nexus-3rd</id>
+            <url>http://localhost:8081/nexus/content/repositories/thirdparty/</url>
+        </repository>
+    </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>com.alibaba</groupId>
