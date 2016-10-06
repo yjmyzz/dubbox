@@ -101,7 +101,7 @@
 		<sorcerer_version>0.8</sorcerer_version>
 		<zookeeper_version>3.4.6</zookeeper_version>
 		<!--<zkclient_version>0.1</zkclient_version>-->
-		<zkclient_version>0.9</zkclient_version>
+		<zkclient_version>0.8.1</zkclient_version>
 		<curator_version>2.5.0</curator_version>
 		<jedis_version>2.1.0</jedis_version>
 		<xmemcached_version>1.3.6</xmemcached_version>
@@ -807,4 +807,11 @@
 			<timezone>+8</timezone>
 		</developer>
 	</developers>
+
+	<!--<distributionManagement>-->
+		<!--<repository>-->
+			<!--<id>9now</id>-->
+			<!--<url>http://114.80.88.52:9001/nexus/content/repositories/jichu/</url>-->
+		<!--</repository>-->
+	<!--</distributionManagement>-->
 </project>
