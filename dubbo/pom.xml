@@ -19,8 +19,8 @@
     <parent>
         <groupId>com.alibaba</groupId>
         <artifactId>dubbo-parent</artifactId>
-        <!--<version>2.8.4a</version>-->
-        <version>2.8.4a</version>
+        <!--<version>2.8.5-SNAPSHOT</version>-->
+        <version>2.8.5-SNAPSHOT</version>
     </parent>
     <artifactId>dubbo</artifactId>
     <packaging>jar</packaging>
@@ -54,37 +54,37 @@
             <artifactId>dubbo-remoting-netty</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>dubbo-remoting-mina</artifactId>
-            <version>${project.parent.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.mina</groupId>
-                    <artifactId>mina-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>dubbo-remoting-grizzly</artifactId>
-            <version>${project.parent.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.glassfish.grizzly</groupId>
-                    <artifactId>grizzly-core</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>dubbo-remoting-p2p</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.alibaba</groupId>-->
+            <!--<artifactId>dubbo-remoting-mina</artifactId>-->
+            <!--<version>${project.parent.version}</version>-->
+            <!--<exclusions>-->
+                <!--<exclusion>-->
+                    <!--<groupId>org.apache.mina</groupId>-->
+                    <!--<artifactId>mina-core</artifactId>-->
+                <!--</exclusion>-->
+                <!--<exclusion>-->
+                    <!--<groupId>org.slf4j</groupId>-->
+                    <!--<artifactId>slf4j-api</artifactId>-->
+                <!--</exclusion>-->
+            <!--</exclusions>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>com.alibaba</groupId>-->
+            <!--<artifactId>dubbo-remoting-grizzly</artifactId>-->
+            <!--<version>${project.parent.version}</version>-->
+            <!--<exclusions>-->
+                <!--<exclusion>-->
+                    <!--<groupId>org.glassfish.grizzly</groupId>-->
+                    <!--<artifactId>grizzly-core</artifactId>-->
+                <!--</exclusion>-->
+            <!--</exclusions>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>com.alibaba</groupId>-->
+            <!--<artifactId>dubbo-remoting-p2p</artifactId>-->
+            <!--<version>${project.parent.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>dubbo-remoting-http</artifactId>
@@ -118,22 +118,22 @@
             <artifactId>dubbo-rpc-injvm</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>dubbo-rpc-rmi</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>dubbo-rpc-hessian</artifactId>
-            <version>${project.parent.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.caucho</groupId>
-                    <artifactId>hessian</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.alibaba</groupId>-->
+            <!--<artifactId>dubbo-rpc-rmi</artifactId>-->
+            <!--<version>${project.parent.version}</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>com.alibaba</groupId>-->
+            <!--<artifactId>dubbo-rpc-hessian</artifactId>-->
+            <!--<version>${project.parent.version}</version>-->
+            <!--<exclusions>-->
+                <!--<exclusion>-->
+                    <!--<groupId>com.caucho</groupId>-->
+                    <!--<artifactId>hessian</artifactId>-->
+                <!--</exclusion>-->
+            <!--</exclusions>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>dubbo-rpc-http</artifactId>
@@ -145,54 +145,54 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>dubbo-rpc-webservice</artifactId>
-            <version>${project.parent.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.cxf</groupId>
-                    <artifactId>cxf-rt-frontend-simple</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.cxf</groupId>
-                    <artifactId>cxf-rt-transports-http</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>dubbo-rpc-thrift</artifactId>
-            <version>${project.parent.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.thrift</groupId>
-                    <artifactId>libthrift</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>dubbo-rpc-memcached</artifactId>
-            <version>${project.parent.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.googlecode.xmemcached</groupId>
-                    <artifactId>xmemcached</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>dubbo-rpc-redis</artifactId>
-            <version>${project.parent.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>redis.clients</groupId>
-                    <artifactId>jedis</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.alibaba</groupId>-->
+            <!--<artifactId>dubbo-rpc-webservice</artifactId>-->
+            <!--<version>${project.parent.version}</version>-->
+            <!--<exclusions>-->
+                <!--<exclusion>-->
+                    <!--<groupId>org.apache.cxf</groupId>-->
+                    <!--<artifactId>cxf-rt-frontend-simple</artifactId>-->
+                <!--</exclusion>-->
+                <!--<exclusion>-->
+                    <!--<groupId>org.apache.cxf</groupId>-->
+                    <!--<artifactId>cxf-rt-transports-http</artifactId>-->
+                <!--</exclusion>-->
+            <!--</exclusions>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>com.alibaba</groupId>-->
+            <!--<artifactId>dubbo-rpc-thrift</artifactId>-->
+            <!--<version>${project.parent.version}</version>-->
+            <!--<exclusions>-->
+                <!--<exclusion>-->
+                    <!--<groupId>org.apache.thrift</groupId>-->
+                    <!--<artifactId>libthrift</artifactId>-->
+                <!--</exclusion>-->
+            <!--</exclusions>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>com.alibaba</groupId>-->
+            <!--<artifactId>dubbo-rpc-memcached</artifactId>-->
+            <!--<version>${project.parent.version}</version>-->
+            <!--<exclusions>-->
+                <!--<exclusion>-->
+                    <!--<groupId>com.googlecode.xmemcached</groupId>-->
+                    <!--<artifactId>xmemcached</artifactId>-->
+                <!--</exclusion>-->
+            <!--</exclusions>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>com.alibaba</groupId>-->
+            <!--<artifactId>dubbo-rpc-redis</artifactId>-->
+            <!--<version>${project.parent.version}</version>-->
+            <!--<exclusions>-->
+                <!--<exclusion>-->
+                    <!--<groupId>redis.clients</groupId>-->
+                    <!--<artifactId>jedis</artifactId>-->
+                <!--</exclusion>-->
+            <!--</exclusions>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>dubbo-rpc-rest</artifactId>
@@ -306,11 +306,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>dubbo-container-log4j</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.alibaba</groupId>-->
+            <!--<artifactId>dubbo-container-log4j</artifactId>-->
+            <!--<version>${project.parent.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>dubbo-container-logback</artifactId>
@@ -330,6 +330,25 @@
                 <exclusion>
                     <groupId>org.apache.thrift</groupId>
                     <artifactId>libthrift</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dubbo-rpc-grpc</artifactId>
+            <version>${project.parent.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.grpc</groupId>
+                    <artifactId>grpc-netty</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.grpc</groupId>
+                    <artifactId>grpc-protobuf</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.grpc</groupId>
+                    <artifactId>grpc-stub</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -405,32 +424,33 @@
                                     <include>com.alibaba:dubbo-common</include>
                                     <include>com.alibaba:dubbo-remoting-api</include>
                                     <include>com.alibaba:dubbo-remoting-netty</include>
-                                    <include>com.alibaba:dubbo-remoting-mina</include>
-                                    <include>com.alibaba:dubbo-remoting-grizzly</include>
-                                    <include>com.alibaba:dubbo-remoting-p2p</include>
+                                    <!--<include>com.alibaba:dubbo-remoting-mina</include>-->
+                                    <!--<include>com.alibaba:dubbo-remoting-grizzly</include>-->
+                                    <!--<include>com.alibaba:dubbo-remoting-p2p</include>-->
                                     <include>com.alibaba:dubbo-remoting-http</include>
                                     <include>com.alibaba:dubbo-remoting-zookeeper</include>
                                     <include>com.alibaba:dubbo-rpc-api</include>
                                     <include>com.alibaba:dubbo-rpc-avro</include>
                                     <include>com.alibaba:dubbo-rpc-default</include>
-                                    <include>com.alibaba:dubbo-rpc-injvm</include>
+                                    <!--<include>com.alibaba:dubbo-rpc-injvm</include>-->
                                     <include>com.alibaba:dubbo-rpc-rmi</include>
-                                    <include>com.alibaba:dubbo-rpc-hessian</include>
+                                    <!--<include>com.alibaba:dubbo-rpc-hessian</include>-->
                                     <include>com.alibaba:dubbo-rpc-http</include>
-                                    <include>com.alibaba:dubbo-rpc-webservice</include>
-                                    <include>com.alibaba:dubbo-rpc-thrift</include>
+                                    <!--<include>com.alibaba:dubbo-rpc-webservice</include>-->
+                                    <!--<include>com.alibaba:dubbo-rpc-thrift</include>-->
                                     <include>com.alibaba:dubbo-rpc-thrift2</include>
-                                    <include>com.alibaba:dubbo-rpc-memcached</include>
-                                    <include>com.alibaba:dubbo-rpc-redis</include>
+                                    <include>com.alibaba:dubbo-rpc-grpc</include>
+                                    <!--<include>com.alibaba:dubbo-rpc-memcached</include>-->
+                                    <!--<include>com.alibaba:dubbo-rpc-redis</include>-->
                                     <include>com.alibaba:dubbo-rpc-rest</include>
                                     <include>com.alibaba:dubbo-filter-validation</include>
                                     <include>com.alibaba:dubbo-filter-cache</include>
                                     <include>com.alibaba:dubbo-cluster</include>
                                     <include>com.alibaba:dubbo-registry-api</include>
                                     <include>com.alibaba:dubbo-registry-default</include>
-                                    <include>com.alibaba:dubbo-registry-multicast</include>
+                                    <!--<include>com.alibaba:dubbo-registry-multicast</include>-->
                                     <include>com.alibaba:dubbo-registry-zookeeper</include>
-                                    <include>com.alibaba:dubbo-registry-redis</include>
+                                    <!--<include>com.alibaba:dubbo-registry-redis</include>-->
                                     <include>com.alibaba:dubbo-monitor-api</include>
                                     <include>com.alibaba:dubbo-monitor-default</include>
                                     <include>com.alibaba:dubbo-config-api</include>
@@ -438,8 +458,8 @@
                                     <include>com.alibaba:dubbo-container-api</include>
                                     <include>com.alibaba:dubbo-container-spring</include>
                                     <include>com.alibaba:dubbo-container-javaconfig</include>
-                                    <include>com.alibaba:dubbo-container-jetty</include>
-                                    <include>com.alibaba:dubbo-container-log4j</include>
+                                    <!--<include>com.alibaba:dubbo-container-jetty</include>-->
+                                    <!--<include>com.alibaba:dubbo-container-log4j</include>-->
                                     <include>com.alibaba:dubbo-container-logback</include>
                                 </includes>
                             </artifactSet>
