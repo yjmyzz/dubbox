@@ -77,7 +77,7 @@ Dubbox adds features like RESTful remoting, Kyro/FST serialization, etc to the p
     * 增加log4j2支持,原来一些硬编码依赖log4j的代码,改为依赖slf4j,以便兼容其它一些主流日志组件(杨俊明)
     * 增加原生thrift支持,升级thrift到0.9.3,为避免与dubbo原来的thrift实现命名冲突，新增的原生thrift协议，协议名称改为thrift2(杨俊明)
     * 增加hadoop avro支持(杨俊明)
-* **2.8.5-SNAPSHOT**：
+* **dubbox-2.8.5-SNAPSHOT**：
     * 编译时去掉了一些不常用的模块，以加快项目整体的编译速度（杨俊明）
     * 增加了google-gRPC-1.0.1的支持，目前仅处于“玩票”阶段，生产环境请慎用（杨俊明）
 
