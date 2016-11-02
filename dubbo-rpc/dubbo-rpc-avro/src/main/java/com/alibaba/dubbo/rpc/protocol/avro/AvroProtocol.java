@@ -42,6 +42,8 @@ public class AvroProtocol extends AbstractProxyProtocol {
                 new InetSocketAddress(url.getHost(), url.getPort()));
         server.start();
 
+        logger.info("Start Avro Server");
+
         return new Runnable() {
             public void run() {
                 try {

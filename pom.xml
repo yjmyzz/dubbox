@@ -82,31 +82,22 @@
 	</profiles>
 	<properties>
 		<!-- Common libs -->
-		<!--<spring.bom.version>3.2.9.RELEASE</spring.bom.version>-->
 		<spring.bom.version>4.2.4.RELEASE</spring.bom.version>
 		<javassist_version>3.15.0-GA</javassist_version>
-		<!--<netty_version>3.7.0.Final</netty_version>-->
 		<netty_version>3.9.9.Final</netty_version>
 		<mina_version>1.1.7</mina_version>
-		<!--<mina_version>2.0.9</mina_version>-->
 		<grizzly_version>2.1.4</grizzly_version>
-		<!--<httpclient_version>4.2.1</httpclient_version>-->
 		<httpclient_version>4.3.4</httpclient_version>
 		<hessian_lite_version>3.2.1-fixed-2</hessian_lite_version>
-		<!--<xstream_version>1.4.1</xstream_version>-->
 		<xstream_version>1.4.8</xstream_version>
-		<!--<fastjson_version>1.1.39</fastjson_version>-->
 		<fastjson_version>1.2.6</fastjson_version>
 		<bsf_version>3.1</bsf_version>
 		<sorcerer_version>0.8</sorcerer_version>
 		<zookeeper_version>3.4.8</zookeeper_version>
-		<!--<zkclient_version>0.1</zkclient_version>-->
 		<zkclient_version>0.8.1</zkclient_version>
-		<!--<zkclient_version>0.9</zkclient_version>-->
 		<curator_version>2.5.0</curator_version>
 		<jedis_version>2.1.0</jedis_version>
 		<xmemcached_version>1.3.6</xmemcached_version>
-		<!--<cxf_version>2.6.1</cxf_version>-->
 		<cxf_version>3.1.5</cxf_version>
 		<thrift_version>0.8.0</thrift_version>
 		<thrift2_version>0.9.3</thrift2_version>
@@ -116,7 +107,6 @@
 		<servlet_version>3.1.0</servlet_version>
 		<jetty_version>6.1.26</jetty_version>
 		<validation_version>1.1.0.Final</validation_version>
-		<!--<hibernate_validator_version>4.2.0.Final</hibernate_validator_version>-->
 		<hibernate_validator_version>5.2.4.Final</hibernate_validator_version>
 		<javax.el-api_version>2.2.4</javax.el-api_version>
 		<javax.el_version>2.2.4</javax.el_version>
@@ -125,21 +115,16 @@
 		<sca_version>2.0-M5.1</sca_version>
 		<guice_version>3.0</guice_version>
 		<cglib_version>2.2</cglib_version>
-		<!--<webx_version>3.0.8</webx_version>-->
 		<webx_version>3.1.6</webx_version>
-        <!--<jackson_version>2.3.3</jackson_version>-->
 		<jackson_version>2.7.1</jackson_version>
 
         <commons_pool_version>1.6</commons_pool_version>
 		<commons-lang_version>2.6</commons-lang_version>
         <tomcat_embed_version>8.0.11</tomcat_embed_version>
 		<!-- Log libs -->
-		<!--<slf4j_version>1.6.2</slf4j_version>-->
 		<slf4j_version>1.7.15</slf4j_version>
 		<jcl_version>1.1</jcl_version>
-		<!--<log4j_version>1.2.16</log4j_version>-->
 		<log4j_version>1.2.17</log4j_version>
-		<!--<logback_version>1.0.6</logback_version>-->
 		<logback_version>1.1.5</logback_version>
 		<log4j2_version>2.5</log4j2_version>
 		<!-- Test libs -->
@@ -179,9 +164,10 @@
 		<profile.name>oss</profile.name>
 
 		<!-- for maven compiler plugin -->
-		<maven_compiler_plugin_version>2.3.2</maven_compiler_plugin_version>
-		<java_source_version>1.6</java_source_version>
-		<java_target_version>1.6</java_target_version>
+		<!--<maven_compiler_plugin_version>2.3.2</maven_compiler_plugin_version>-->
+		<maven_compiler_plugin_version>3.6.0</maven_compiler_plugin_version>
+		<java_source_version>1.8</java_source_version>
+		<java_target_version>1.8</java_target_version>
 		<file_encoding>UTF-8</file_encoding>
 
 		<maven_source_plugin_version>2.1.1</maven_source_plugin_version>
@@ -302,7 +288,8 @@
 			<dependency>
 				<groupId>org.apache.thrift</groupId>
 				<artifactId>libthrift</artifactId>
-				<version>${thrift_version}</version>
+				<!--<version>${thrift_version}</version>-->
+				<version>${thrift2_version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.avro</groupId>
@@ -707,7 +694,7 @@
 											maven-dependency-plugin
 										</artifactId>
 										<versionRange>
-											[2.1,)
+											[2.5,)
 										</versionRange>
 										<goals>
 											<goal>unpack</goal>
@@ -809,10 +796,12 @@
 		</developer>
 	</developers>
 
-	<!--<distributionManagement>-->
-		<!--<repository>-->
-			<!--<id>9now</id>-->
-			<!--<url>http://114.80.88.52:9001/nexus/content/repositories/jichu/</url>-->
-		<!--</repository>-->
-	<!--</distributionManagement>-->
+	<!--mvn deploy -Dmaven.test.skip=true-->
+	<distributionManagement>
+		<repository>
+			<id>9now</id>
+			<url>http://114.80.88.52:9001/nexus/content/repositories/jichu-snapshots/</url>
+		</repository>
+	</distributionManagement>
+
 </project>

@@ -235,6 +235,7 @@ public final class URL implements Serializable {
             url = url.substring(i + 1);
         }
         i = url.indexOf(":");
+        //fe80:0:0:0:fc83:51ff:fe41:9c76%9:20880 此处有bug，如果是ipv6就挂了
         if (i >= 0 && i < url.length() - 1) {
             port = Integer.parseInt(url.substring(i + 1));
             url = url.substring(0, i);
