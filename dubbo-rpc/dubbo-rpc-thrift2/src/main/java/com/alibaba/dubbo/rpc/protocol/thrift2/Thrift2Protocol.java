@@ -35,6 +35,27 @@ public class Thrift2Protocol extends AbstractProxyProtocol {
         super(TException.class, RpcException.class);
     }
 
+
+    @Override
+    protected <T> Runnable doExport(T impl, Class<T> type, URL url)
+            throws RpcException {
+
+        logger.info("impl => " + impl.getClass());
+        logger.info("type => " + type.getName());
+        logger.info("url => " + url);
+
+        return exportNonblockingServer(impl, type, url);
+        //return exportThreadPoolServer(impl, type, url);
+    }
+
+    @Override
+    protected <T> T doRefer(Class<T> type, URL url) throws RpcException {
+        logger.info("type => " + type.getName());
+        logger.info("url => " + url);
+        return doReferFrameAndCompact(type, url);
+    }
+
+
     private <T> Runnable exportNonblockingServer(T impl, Class<T> type, URL url)
             throws RpcException {
         TProcessor tprocessor;
@@ -73,16 +94,16 @@ public class Thrift2Protocol extends AbstractProxyProtocol {
 
         new Thread(new Runnable() {
             public void run() {
-                logger.info("1=>Start Thrift Server");
+                logger.info("Start Thrift NonblockingServer");
                 thriftServer.serve();
-                logger.info("1=>Thrift server started.");
+                logger.info("Thrift NonblockingServer started.");
             }
         }).start();
 
         return new Runnable() {
             public void run() {
                 try {
-                    logger.info("1=>Close Thrift Server");
+                    logger.info("Close Thrift NonblockingServer");
                     thriftServer.stop();
                 } catch (Throwable e) {
                     logger.warn(e.getMessage(), e);
@@ -110,7 +131,7 @@ public class Thrift2Protocol extends AbstractProxyProtocol {
                     tArgs = new TThreadPoolServer.Args(transport);
                     tArgs.processor(tprocessor);
                     tArgs.executorService(Executors.newFixedThreadPool(100));
-//                    tArgs.protocolFactory(new TBinaryProtocol.Factory());
+                    tArgs.protocolFactory(new TBinaryProtocol.Factory());
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);
                     throw new RpcException("Fail to create thrift server(" + url + ") : " + e.getMessage(), e);
@@ -129,14 +150,14 @@ public class Thrift2Protocol extends AbstractProxyProtocol {
 
         ExecutorService service = Executors.newFixedThreadPool(50);
         service.submit(() -> {
-            logger.info("3=>Start Thrift Server");
+            logger.info("Start Thrift ThreadPoolServer");
             thriftServer.serve();
-            logger.info("3=>Thrift server started.");
+            logger.info("Thrift ThreadPoolServer started.");
         });
 
         return () -> {
             try {
-                logger.info("3=>Close Thrift Server");
+                logger.info("Close Thrift ThreadPoolServer");
                 thriftServer.stop();
             } catch (Throwable e) {
                 logger.warn(e.getMessage(), e);
@@ -145,25 +166,10 @@ public class Thrift2Protocol extends AbstractProxyProtocol {
     }
 
 
-    @Override
-    protected <T> Runnable doExport(T impl, Class<T> type, URL url)
-            throws RpcException {
-
-        logger.info("impl => " + impl.getClass());
-        logger.info("type => " + type.getName());
-        logger.info("url => " + url);
-
-        return exportNonblockingServer(impl, type, url);
-        //return exportThreadPoolServer(impl, type, url);
-    }
-
-    @Override
-    protected <T> T doRefer(Class<T> type, URL url) throws RpcException {
-
-        logger.info("type => " + type.getName());
-        logger.info("url => " + url);
+    private <T> T doReferFrameAndCompact(Class<T> type, URL url) throws RpcException {
 
         try {
+            TSocket tSocket;
             TTransport transport;
             TProtocol protocol;
             T thriftClient = null;
@@ -176,8 +182,9 @@ public class Thrift2Protocol extends AbstractProxyProtocol {
                 Class<?> clazz = Class.forName(clientClsName);
                 Constructor constructor = clazz.getConstructor(TProtocol.class);
                 try {
-                    transport = new TSocket(url.getHost(), url.getPort());
-                    protocol = new TBinaryProtocol(transport);
+                    tSocket = new TSocket(url.getHost(), url.getPort());
+                    transport = new TFramedTransport(tSocket);
+                    protocol = new TCompactProtocol(transport);
                     thriftClient = (T) constructor.newInstance(protocol);
                     transport.open();
                     logger.info("thrift client opened for service(" + url + ")");
@@ -194,7 +201,7 @@ public class Thrift2Protocol extends AbstractProxyProtocol {
     }
 
 
-    private <T> T doReferFrameAndCompact(Class<T> type, URL url) throws RpcException {
+    private <T> T doReferBinary(Class<T> type, URL url) throws RpcException {
 
         try {
             TTransport transport;

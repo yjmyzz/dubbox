@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://code.alibabatech.com/schema/dubbo
+	   http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <dubbo:application name="dubbo-demo-provider" organization="cnblogs" owner="yjmyzz" version="1.0"/>
+
+    <dubbo:registry protocol="zookeeper"
+                    address="localhost:2181"/>
+
+    <dubbo:protocol name="rest" port="8086" threads="500" server="tomcat"
+                    accepts="500"
+                    contextpath="service"/>
+
+    <dubbo:protocol name="grpc" port="50051"/>
+
+    <dubbo:protocol name="thrift2" port="33205"/>
+
+    <dubbo:service interface="com.cnblogs.yjmyzz.demo.service.api.rest.RestHelloService" protocol="rest"
+                   ref="restService"/>
+
+    <!--<dubbo:service interface="com.alibaba.dubbo.rpc.protocol.grpc.GrpcBindableService"-->
+                   <!--protocol="grpc"-->
+                   <!--ref="grpcDemoService" class="cn.mwee.demo.dubbo.service.impl.rpc.grpc.DemoServiceImpl"/>-->
+
+    <dubbo:service interface="com.cnblogs.yjmyzz.demo.service.api.dubbo.DubboHelloService" protocol="dubbo"
+                   ref="dubboService"/>
+
+    <dubbo:service interface="com.cnblogs.yjmyzz.demo.service.api.thrift.ThriftHelloService$Iface" protocol="thrift2"
+                   ref="thriftService"/>
+</beans>

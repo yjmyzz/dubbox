@@ -31,8 +31,8 @@
 	<modules>
 		<module>dubbo-registry-api</module>
 		<module>dubbo-registry-default</module>
-		<!--<module>dubbo-registry-multicast</module>-->
+		<module>dubbo-registry-multicast</module>
 		<module>dubbo-registry-zookeeper</module>
-		<!--<module>dubbo-registry-redis</module>-->
+		<module>dubbo-registry-redis</module>
 	</modules>
 </project>

@@ -1,0 +1,5 @@
+@namespace ("com.cnblogs.yjmyzz.demo.service.api.avro")
+protocol AvroHelloService
+{
+    string ping();
+}
