@@ -1,1 +1,0 @@
-java -Xms1g -Xmx1g -XX:PermSize=64M -XX:+UseConcMarkSweepGC -Djava.ext.dirs=./lib -classpath conf com.alibaba.dubbo.container.Main  > "benchmark.log" 2>&1

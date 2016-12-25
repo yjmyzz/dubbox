@@ -16,20 +16,27 @@
                     accepts="500"
                     contextpath="service"/>
 
+    <dubbo:protocol name="dubbo" port="10100"/>
+
     <dubbo:protocol name="grpc" port="50051"/>
 
-    <dubbo:protocol name="thrift2" port="33205"/>
+    <dubbo:protocol name="thrift2" port="10300"/>
+
+    <dubbo:protocol name="avro" port="10400"/>
 
     <dubbo:service interface="com.cnblogs.yjmyzz.demo.service.api.rest.RestHelloService" protocol="rest"
                    ref="restService"/>
 
-    <!--<dubbo:service interface="com.alibaba.dubbo.rpc.protocol.grpc.GrpcBindableService"-->
-                   <!--protocol="grpc"-->
-                   <!--ref="grpcDemoService" class="cn.mwee.demo.dubbo.service.impl.rpc.grpc.DemoServiceImpl"/>-->
+    <dubbo:service interface="com.alibaba.dubbo.rpc.protocol.grpc.GrpcBindableService"
+                   protocol="grpc"
+                   ref="grpcService" class="com.cnblogs.yjmyzz.demo.service.impl.grpc.HelloServiceImpl"/>
 
     <dubbo:service interface="com.cnblogs.yjmyzz.demo.service.api.dubbo.DubboHelloService" protocol="dubbo"
                    ref="dubboService"/>
 
     <dubbo:service interface="com.cnblogs.yjmyzz.demo.service.api.thrift.ThriftHelloService$Iface" protocol="thrift2"
                    ref="thriftService"/>
+
+    <dubbo:service interface="com.cnblogs.yjmyzz.demo.service.api.avro.AvroHelloService" protocol="avro"
+                   ref="avroService"/>
 </beans>

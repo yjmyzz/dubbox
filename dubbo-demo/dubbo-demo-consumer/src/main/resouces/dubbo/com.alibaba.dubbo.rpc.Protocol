@@ -1,0 +1,2 @@
+grpc=com.alibaba.dubbo.rpc.protocol.grpc.GrpcProtocol
+thrift2=com.alibaba.dubbo.rpc.protocol.thrift2.Thrift2Protocol

@@ -27,8 +27,8 @@ public class HelloServiceImpl extends GrpcHelloServiceGrpc.GrpcHelloServiceImplB
     @Override
     public void ping(PingRequest request,
                      StreamObserver<PingResponse> responseObserver) {
-//        PingResponse reply = PingResponse.newBuilder().setMessage("grpc is running").build();
-//        responseObserver.onNext(reply);
-//        responseObserver.onCompleted();
+        PingResponse reply = PingResponse.newBuilder().setMessage("grpc is running").build();
+        responseObserver.onNext(reply);
+        responseObserver.onCompleted();
     }
 }
