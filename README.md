@@ -80,6 +80,8 @@ Dubbox adds features like RESTful remoting, Kyro/FST serialization, etc to the p
 * **dubbox-2.8.5**：
     * 编译时去掉了一些不常用的模块，以加快项目整体的编译速度（杨俊明）
     * 增加了google-gRPC-1.0.1的支持，目前仅处于“玩票”阶段，生产环境请慎用（杨俊明）
+    * 重写了dubbo-demo模块，提供了rest/dubbo/avro/thrift/grpc五种协议的基本示例(杨俊明)
+    * 将zkclient 0.8.1加入项目中，避免大家编译时，要先去pull另一个项目
 
 ## 依赖
 

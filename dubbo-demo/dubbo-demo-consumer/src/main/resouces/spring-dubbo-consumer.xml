@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://code.alibabatech.com/schema/dubbo
+	   http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <dubbo:application name="dubbo-demo-consumer" organization="cnblogs" owner="yjmyzz" version="1.0"/>
+
+    <dubbo:registry protocol="zookeeper"
+                    address="localhost:2181"/>
+
+    <dubbo:reference check="true" interface="com.cnblogs.yjmyzz.demo.service.api.rest.RestHelloService"
+                     id="restService"/>
+
+    <dubbo:reference check="true" interface="com.cnblogs.yjmyzz.demo.service.api.dubbo.DubboHelloService"
+                     id="dubboService"/>
+
+    <dubbo:reference check="true" interface="com.alibaba.dubbo.rpc.protocol.grpc.GrpcBindableService"
+                     id="grpcService"/>
+
+    <dubbo:reference check="true" interface="com.cnblogs.yjmyzz.demo.service.api.thrift.ThriftHelloService$Iface"
+                     id="thriftService"/>
+
+    <dubbo:reference check="true" interface="com.cnblogs.yjmyzz.demo.service.api.avro.AvroHelloService"
+                     id="avroService"/>
+
+
+</beans>

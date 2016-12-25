@@ -75,9 +75,7 @@
 			<artifactId>zookeeper</artifactId>
 		</dependency>
 		<dependency>
-			<!--<groupId>com.github.sgroschupf</groupId>-->
-			<!--<artifactId>zkclient</artifactId>-->
-			<groupId>com.101tec</groupId>
+			<groupId>com.alibaba</groupId>
 			<artifactId>zkclient</artifactId>
 		</dependency>
 		<dependency>

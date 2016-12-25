@@ -8,8 +8,33 @@
         <artifactId>dubbo-parent</artifactId>
         <version>2.8.5-SNAPSHOT</version>
     </parent>
-    <artifactId>hessian-lite</artifactId>
+    <artifactId>zkclient</artifactId>
     <packaging>jar</packaging>
-    <version>3.2.1-fixed-2</version>
-    <name>Hessian Lite(Alibaba embed version)</name>
+    <version>0.8.1</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.zookeeper</groupId>
+            <artifactId>zookeeper</artifactId>
+            <version>3.4.8</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>1.4</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>1.8.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>2.0.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>
