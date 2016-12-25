@@ -149,7 +149,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>zkclient</artifactId>
-            <version>0.8.1</version>
+            <version>0.8.1-SNAPSHOT</version>
         </dependency>
 
         <!--json-->
