@@ -707,12 +707,6 @@
 		</developer>
 	</developers>
 
-	<!--mvn deploy -Dmaven.test.skip=true-->
-	<distributionManagement>
-		<repository>
-			<id>9now</id>
-			<url>http://114.80.88.52:9001/nexus/content/repositories/jichu-snapshots/</url>
-		</repository>
-	</distributionManagement>
+
 
 </project>
