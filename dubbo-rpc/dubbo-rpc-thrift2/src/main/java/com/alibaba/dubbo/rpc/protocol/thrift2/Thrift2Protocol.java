@@ -45,17 +45,17 @@ public class Thrift2Protocol extends AbstractProxyProtocol {
         logger.info("type => " + type.getName());
         logger.info("url => " + url);
 
-        //return exportNonblockingServer(impl, type, url);
+        return exportNonblockingServer(impl, type, url);
         //return exportThreadPoolServer(impl, type, url);
-        return exportThreadedSelectorServer(impl, type, url);
+        //return exportThreadedSelectorServer(impl, type, url);
     }
 
     @Override
     protected <T> T doRefer(Class<T> type, URL url) throws RpcException {
         logger.info("type => " + type.getName());
         logger.info("url => " + url);
-        //return doReferFrameAndCompact(type, url);
-        return doReferFrameAndBinary(type, url);
+        return doReferFrameAndCompact(type, url);
+        //return doReferFrameAndBinary(type, url);
     }
 
 
