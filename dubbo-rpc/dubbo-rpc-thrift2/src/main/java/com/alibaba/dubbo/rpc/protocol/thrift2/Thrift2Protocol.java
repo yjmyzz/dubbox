@@ -54,7 +54,8 @@ public class Thrift2Protocol extends AbstractProxyProtocol {
     protected <T> T doRefer(Class<T> type, URL url) throws RpcException {
         logger.info("type => " + type.getName());
         logger.info("url => " + url);
-        return doReferFrameAndCompact(type, url);
+        //return doReferFrameAndCompact(type, url);
+        return doReferFrameAndBinary(type, url);
     }
 
 
@@ -77,7 +78,7 @@ public class Thrift2Protocol extends AbstractProxyProtocol {
                     tArgs = new TNonblockingServer.Args(transport);
                     tArgs.processor(tprocessor);
                     tArgs.transportFactory(new TFramedTransport.Factory());
-                    tArgs.protocolFactory(new TCompactProtocol.Factory());
+                    tArgs.protocolFactory(new TBinaryProtocol.Factory());
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);
                     throw new RpcException("Fail to create thrift server(" + url + ") : " + e.getMessage(), e);
@@ -186,7 +187,7 @@ public class Thrift2Protocol extends AbstractProxyProtocol {
                     tArgs = new TThreadedSelectorServer.Args(transport);
                     tArgs.processor(tprocessor);
                     tArgs.executorService(Executors.newFixedThreadPool(100));
-                    tArgs.protocolFactory(new TCompactProtocol.Factory());
+                    tArgs.protocolFactory(new TBinaryProtocol.Factory());
                     tArgs.transportFactory(new TFramedTransport.Factory());
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);
@@ -241,6 +242,39 @@ public class Thrift2Protocol extends AbstractProxyProtocol {
                     tSocket = new TSocket(url.getHost(), url.getPort());
                     transport = new TFramedTransport(tSocket);
                     protocol = new TCompactProtocol(transport);
+                    thriftClient = (T) constructor.newInstance(protocol);
+                    transport.open();
+                    logger.info("thrift client opened for service(" + url + ")");
+                } catch (Exception e) {
+                    logger.error(e.getMessage(), e);
+                    throw new RpcException("Fail to create remote client:" + e.getMessage(), e);
+                }
+            }
+            return thriftClient;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new RpcException("Fail to create remote client for service(" + url + "): " + e.getMessage(), e);
+        }
+    }
+
+    private <T> T doReferFrameAndBinary(Class<T> type, URL url) throws RpcException {
+        try {
+            TSocket tSocket;
+            TTransport transport;
+            TProtocol protocol;
+            T thriftClient = null;
+            String iFace = "$Iface";
+            String client = "$Client";
+
+            String typeName = type.getName();
+            if (typeName.endsWith(iFace)) {
+                String clientClsName = typeName.substring(0, typeName.indexOf(iFace)) + client;
+                Class<?> clazz = Class.forName(clientClsName);
+                Constructor constructor = clazz.getConstructor(TProtocol.class);
+                try {
+                    tSocket = new TSocket(url.getHost(), url.getPort());
+                    transport = new TFramedTransport(tSocket);
+                    protocol = new TBinaryProtocol(transport);
                     thriftClient = (T) constructor.newInstance(protocol);
                     transport.open();
                     logger.info("thrift client opened for service(" + url + ")");
