@@ -707,6 +707,12 @@
 		</developer>
 	</developers>
 
-
+	<!--mvn deploy -Dmaven.test.skip=true-->
+	<distributionManagement>
+		<repository>
+			<id>9now</id>
+			<url>http://nexus.mwbyd.cn/nexus/content/repositories/jichu-snapshots/</url>
+		</repository>
+	</distributionManagement>
 
 </project>

@@ -71,7 +71,14 @@ public class Thrift2Protocol extends AbstractProxyProtocol {
                 Constructor constructor = clazz.getConstructor(type);
                 try {
                     tprocessor = (TProcessor) constructor.newInstance(impl);
-                    transport = new TNonblockingServerSocket(url.getPort());
+
+                    //解决并发连接数上限默认只有50的问题
+                    TNonblockingServerSocket.NonblockingAbstractServerSocketArgs args = new TNonblockingServerSocket.NonblockingAbstractServerSocketArgs();
+                    args.backlog(Integer.MAX_VALUE);
+                    args.port(url.getPort());
+                    transport = new TNonblockingServerSocket(args);
+
+                    //transport = new TNonblockingServerSocket(url.getPort());
                     tArgs = new TNonblockingServer.Args(transport);
                     tArgs.processor(tprocessor);
                     tArgs.transportFactory(new TFramedTransport.Factory());
