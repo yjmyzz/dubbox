@@ -74,9 +74,9 @@ public class Thrift2Protocol extends AbstractProxyProtocol {
 
                     //解决并发连接数上限默认只有50的问题
                     TNonblockingServerSocket.NonblockingAbstractServerSocketArgs args = new TNonblockingServerSocket.NonblockingAbstractServerSocketArgs();
-                    args.backlog(Integer.MAX_VALUE);
+                    args.backlog(1000);//1k个连接
                     args.port(url.getPort());
-                    args.clientTimeout(5000);//5秒超时
+                    args.clientTimeout(10000);//10秒超时
                     transport = new TNonblockingServerSocket(args);
 
                     //transport = new TNonblockingServerSocket(url.getPort());
