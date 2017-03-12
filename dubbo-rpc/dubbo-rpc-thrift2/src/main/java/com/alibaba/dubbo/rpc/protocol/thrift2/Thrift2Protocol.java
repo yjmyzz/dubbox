@@ -76,6 +76,7 @@ public class Thrift2Protocol extends AbstractProxyProtocol {
                     TNonblockingServerSocket.NonblockingAbstractServerSocketArgs args = new TNonblockingServerSocket.NonblockingAbstractServerSocketArgs();
                     args.backlog(Integer.MAX_VALUE);
                     args.port(url.getPort());
+                    args.clientTimeout(5000);//5秒超时
                     transport = new TNonblockingServerSocket(args);
 
                     //transport = new TNonblockingServerSocket(url.getPort());
