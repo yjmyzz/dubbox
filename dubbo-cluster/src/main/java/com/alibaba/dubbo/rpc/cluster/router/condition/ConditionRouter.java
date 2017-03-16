@@ -39,22 +39,22 @@ import com.alibaba.dubbo.rpc.cluster.Router;
 
 /**
  * ConditionRouter
- * 
+ *
  * @author william.liangf
  */
 public class ConditionRouter implements Router, Comparable<Router> {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(ConditionRouter.class);
 
     private final URL url;
-    
+
     private final int priority;
 
     private final boolean force;
 
-    private final Map<String, MatchPair> whenCondition;
-    
-    private final Map<String, MatchPair> thenCondition;
+    private final Map<String, MatchPair> whenCondition;     //消费端匹配
+
+    private final Map<String, MatchPair> thenCondition;     //提供端过滤
 
     public ConditionRouter(URL url) {
         this.url = url;
@@ -79,18 +79,39 @@ public class ConditionRouter implements Router, Comparable<Router> {
         }
     }
 
+    public boolean hasWhenCondition() {
+        return whenCondition != null && whenCondition.size() > 0;
+    }
+
+    public boolean hasThenCondition() {
+        return thenCondition != null && thenCondition.size() > 0;
+    }
+
+    /**
+     * 路由规则逻辑
+     * 1. 必须同时配置 消费端匹配 和 提供端过滤
+     * 2. 消费端不匹配 返回所有 invoker
+     *
+     * @param invokers
+     * @param url refer url
+     * @param invocation
+     * @param <T>
+     * @return
+     * @throws RpcException
+     */
     public <T> List<Invoker<T>> route(List<Invoker<T>> invokers, URL url, Invocation invocation)
             throws RpcException {
         if (invokers == null || invokers.size() == 0) {
             return invokers;
         }
         try {
-            if (! matchWhen(url)) {
+            //消费端匹配 如果不匹配 直接返回所有invoker
+            if (!matchWhen(url)) {
                 return invokers;
             }
             List<Invoker<T>> result = new ArrayList<Invoker<T>>();
-            if (thenCondition == null) {
-            	logger.warn("The current consumer in the service blacklist. consumer: " + NetUtils.getLocalHost() + ", service: " + url.getServiceKey());
+            if (!hasThenCondition()) {
+                logger.warn("The current consumer in the service blacklist. consumer: " + NetUtils.getLocalHost() + ", service: " + url.getServiceKey());
                 return result;
             }
             for (Invoker<T> invoker : invokers) {
@@ -101,8 +122,8 @@ public class ConditionRouter implements Router, Comparable<Router> {
             if (result.size() > 0) {
                 return result;
             } else if (force) {
-            	logger.warn("The route result is empty and force execute. consumer: " + NetUtils.getLocalHost() + ", service: " + url.getServiceKey() + ", router: " + url.getParameterAndDecoded(Constants.RULE_KEY));
-            	return result;
+                logger.warn("The route result is empty and force execute. consumer: " + NetUtils.getLocalHost() + ", service: " + url.getServiceKey() + ", router: " + url.getParameterAndDecoded(Constants.RULE_KEY));
+                return result;
             }
         } catch (Throwable t) {
             logger.error("Failed to execute condition router rule: " + getUrl() + ", invokers: " + invokers + ", cause: " + t.getMessage(), t);
@@ -129,27 +150,33 @@ public class ConditionRouter implements Router, Comparable<Router> {
     public boolean matchThen(URL url, URL param) {
         return thenCondition != null && matchCondition(thenCondition, url, param);
     }
-    
+
     private boolean matchCondition(Map<String, MatchPair> condition, URL url, URL param) {
         Map<String, String> sample = url.toMap();
         for (Map.Entry<String, String> entry : sample.entrySet()) {
             String key = entry.getKey();
             MatchPair pair = condition.get(key);
-            if (pair != null && ! pair.isMatch(entry.getValue(), param)) {
-                return false;
+            if (param == null) {
+                if (pair != null && !pair.isMatch(entry.getValue())) {
+                    return false;
+                }
+            } else {
+                if (pair != null && !pair.isMatch(entry.getValue(), param)) {
+                    return false;
+                }
             }
         }
         return true;
     }
-    
+
     private static Pattern ROUTE_PATTERN = Pattern.compile("([&!=,]*)\\s*([^&!=,\\s]+)");
-    
+
     private static Map<String, MatchPair> parseRule(String rule)
             throws ParseException {
         Map<String, MatchPair> condition = new HashMap<String, MatchPair>();
         if(StringUtils.isBlank(rule)) {
             return condition;
-        }        
+        }
         // 匹配或不匹配Key-Value对
         MatchPair pair = null;
         // 多个Value值
@@ -214,6 +241,7 @@ public class ConditionRouter implements Router, Comparable<Router> {
     private static final class MatchPair {
         final Set<String> matches = new HashSet<String>();
         final Set<String> mismatches = new HashSet<String>();
+
         public boolean isMatch(String value, URL param) {
             for (String match : matches) {
                 if (! UrlUtils.isMatchGlobPattern(match, value, param)) {
@@ -222,6 +250,21 @@ public class ConditionRouter implements Router, Comparable<Router> {
             }
             for (String mismatch : mismatches) {
                 if (UrlUtils.isMatchGlobPattern(mismatch, value, param)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+
+        public boolean isMatch(String value) {
+            for (String match : matches) {
+                if (!UrlUtils.isMatchGlobPattern(match, value)) {
+                    return false;
+                }
+            }
+            for (String mismatch : mismatches) {
+                if (UrlUtils.isMatchGlobPattern(mismatch, value)) {
                     return false;
                 }
             }
