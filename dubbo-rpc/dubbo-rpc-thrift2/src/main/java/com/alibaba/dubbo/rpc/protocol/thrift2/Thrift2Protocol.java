@@ -243,6 +243,61 @@ public class Thrift2Protocol extends AbstractProxyProtocol {
         };
     }
 
+    private <T> Runnable exportThreadedSelectorServer(T impl, Class<T> type, URL url)
+            throws RpcException {
+        TProcessor tprocessor;
+        TThreadedSelectorServer.Args tArgs = null;
+        String iFace = "$Iface";
+        String processor = "$Processor";
+        String typeName = type.getName();
+        TNonblockingServerSocket transport;
+        if (typeName.endsWith(iFace)) {
+            String processorClsName = typeName.substring(0, typeName.indexOf(iFace)) + processor;
+            try {
+                Class<?> clazz = Class.forName(processorClsName);
+                Constructor constructor = clazz.getConstructor(type);
+                try {
+                    tprocessor = (TProcessor) constructor.newInstance(impl);
+                    transport = new TNonblockingServerSocket(url.getPort());
+                    tArgs = new TThreadedSelectorServer.Args(transport);
+                    tArgs.processor(tprocessor);
+                    tArgs.executorService(Executors.newFixedThreadPool(100));
+                    tArgs.protocolFactory(new TBinaryProtocol.Factory());
+                    tArgs.transportFactory(new TFramedTransport.Factory());
+                } catch (Exception e) {
+                    logger.error(e.getMessage(), e);
+                    throw new RpcException("Fail to create thrift server(" + url + ") : " + e.getMessage(), e);
+                }
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+                throw new RpcException("Fail to create thrift server(" + url + ") : " + e.getMessage(), e);
+            }
+        }
+
+        if (tArgs == null) {
+            logger.error("Fail to create thrift server(" + url + ") due to null args");
+            throw new RpcException("Fail to create thrift server(" + url + ") due to null args");
+        }
+        final TServer thriftServer = new TThreadedSelectorServer(tArgs);
+
+        new Thread(new Runnable() {
+            public void run() {
+                logger.info("Start Thrift ThreadedSelectorServer");
+                thriftServer.serve();
+                logger.info("Thrift ThreadedSelectorServer started.");
+            }
+        }).start();
+
+        return () -> {
+            try {
+                logger.info("Close Thrift ThreadedSelectorServer");
+                thriftServer.stop();
+            } catch (Throwable e) {
+                logger.warn(e.getMessage(), e);
+            }
+        };
+    }
+
 
     private <T> T doReferFrameAndCompact(Class<T> type, URL url) throws RpcException {
 
@@ -277,7 +332,6 @@ public class Thrift2Protocol extends AbstractProxyProtocol {
             throw new RpcException("Fail to create remote client for service(" + url + "): " + e.getMessage(), e);
         }
     }
-
 
     private <T> T doReferBinary(Class<T> type, URL url) throws RpcException {
 
