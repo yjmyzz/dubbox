@@ -13,6 +13,7 @@ import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.server.TNonblockingServer;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TThreadPoolServer;
+import org.apache.thrift.server.TThreadedSelectorServer;
 import org.apache.thrift.transport.*;
 
 import java.lang.reflect.Constructor;
@@ -57,6 +58,74 @@ public class Thrift2Protocol extends AbstractProxyProtocol {
 
 
     private <T> Runnable exportNonblockingServer(T impl, Class<T> type, URL url)
+            throws RpcException {
+        TProcessor tprocessor;
+        TThreadedSelectorServer.Args tArgs = null;
+        String iFace = "$Iface";
+        String processor = "$Processor";
+        String typeName = type.getName();
+        TNonblockingServerSocket transport;
+        if (typeName.endsWith(iFace)) {
+            String processorClsName = typeName.substring(0, typeName.indexOf(iFace)) + processor;
+            try {
+                Class<?> clazz = Class.forName(processorClsName);
+                Constructor constructor = clazz.getConstructor(type);
+                try {
+                    tprocessor = (TProcessor) constructor.newInstance(impl);
+
+                    //解决并发连接数上限默认只有50的问题
+                    TNonblockingServerSocket.NonblockingAbstractServerSocketArgs args = new TNonblockingServerSocket.NonblockingAbstractServerSocketArgs();
+                    args.backlog(1000);//1k个连接
+                    args.port(url.getPort());
+                    args.clientTimeout(10000);//10秒超时TTh
+
+                    transport = new TNonblockingServerSocket(args);
+
+                    tArgs = new TThreadedSelectorServer.Args(transport);
+                    tArgs.workerThreads(200);
+                    tArgs.selectorThreads(4);
+                    tArgs.acceptQueueSizePerThread(256);
+                    tArgs.processor(tprocessor);
+                    tArgs.transportFactory(new TFramedTransport.Factory());
+                    tArgs.protocolFactory(new TCompactProtocol.Factory());
+                } catch (Exception e) {
+                    logger.error(e.getMessage(), e);
+                    throw new RpcException("Fail to create thrift server(" + url + ") : " + e.getMessage(), e);
+                }
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+                throw new RpcException("Fail to create thrift server(" + url + ") : " + e.getMessage(), e);
+            }
+        }
+
+        if (tArgs == null) {
+            logger.error("Fail to create thrift server(" + url + ") due to null args");
+            throw new RpcException("Fail to create thrift server(" + url + ") due to null args");
+        }
+        final TServer thriftServer = new TThreadedSelectorServer(tArgs);
+
+        new Thread(new Runnable() {
+            public void run() {
+                logger.info("Start Thrift NonblockingServer");
+                thriftServer.serve();
+                logger.info("Thrift NonblockingServer started.");
+            }
+        }).start();
+
+        return new Runnable() {
+            public void run() {
+                try {
+                    logger.info("Close Thrift NonblockingServer");
+                    thriftServer.stop();
+                } catch (Throwable e) {
+                    logger.warn(e.getMessage(), e);
+                }
+            }
+        };
+    }
+
+
+    private <T> Runnable exportNonblockingServer2(T impl, Class<T> type, URL url)
             throws RpcException {
         TProcessor tprocessor;
         TNonblockingServer.Args tArgs = null;
@@ -135,11 +204,12 @@ public class Thrift2Protocol extends AbstractProxyProtocol {
                 Constructor constructor = clazz.getConstructor(type);
                 try {
                     tprocessor = (TProcessor) constructor.newInstance(impl);
-                    transport = new TServerSocket(url.getPort());
+                    transport = new TServerSocket(url.getPort(), 10000);//设置10秒超时
                     tArgs = new TThreadPoolServer.Args(transport);
                     tArgs.processor(tprocessor);
-                    tArgs.executorService(Executors.newFixedThreadPool(100));
-                    tArgs.protocolFactory(new TBinaryProtocol.Factory());
+                    tArgs.transportFactory(new TFramedTransport.Factory());
+                    tArgs.executorService(Executors.newFixedThreadPool(1000));//设置线程池大小为1000
+                    tArgs.protocolFactory(new TCompactProtocol.Factory());
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);
                     throw new RpcException("Fail to create thrift server(" + url + ") : " + e.getMessage(), e);
