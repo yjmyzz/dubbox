@@ -39,6 +39,8 @@ public class Statistics implements Serializable {
     
     private String group;
 
+    private String organization;
+
     private String version;
     
     private String client;
@@ -51,6 +53,7 @@ public class Statistics implements Serializable {
         this.service = url.getParameter(MonitorService.INTERFACE);
         this.method = url.getParameter(MonitorService.METHOD);
         this.group = url.getParameter(MonitorService.GROUP);
+        this.organization = url.getParameter(MonitorService.ORGANIZATION);
         this.version = url.getParameter(MonitorService.VERSION);
         this.client = url.getParameter(MonitorService.CONSUMER, url.getAddress());
         this.server = url.getParameter(MonitorService.PROVIDER, url.getAddress());
@@ -88,6 +91,14 @@ public class Statistics implements Serializable {
 
     public void setGroup(String group) {
         this.group = group;
+    }
+
+    public String getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(String organization) {
+        this.organization = organization;
     }
 
     public String getVersion() {
@@ -132,6 +143,7 @@ public class Statistics implements Serializable {
         result = prime * result + ((application == null) ? 0 : application.hashCode());
         result = prime * result + ((client == null) ? 0 : client.hashCode());
         result = prime * result + ((group == null) ? 0 : group.hashCode());
+        result = prime * result + ((organization == null) ? 0 : organization.hashCode());
         result = prime * result + ((method == null) ? 0 : method.hashCode());
         result = prime * result + ((server == null) ? 0 : server.hashCode());
         result = prime * result + ((service == null) ? 0 : service.hashCode());
@@ -162,6 +174,11 @@ public class Statistics implements Serializable {
             if (other.group != null)
                 return false;
         } else if (!group.equals(other.group))
+            return false;
+        if (organization == null) {
+            if (other.organization != null)
+                return false;
+        } else if (!organization.equals(other.organization))
             return false;
         if (method == null) {
             if (other.method != null)

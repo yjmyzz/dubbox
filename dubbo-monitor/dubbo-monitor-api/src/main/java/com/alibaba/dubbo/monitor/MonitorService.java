@@ -35,6 +35,8 @@ public interface MonitorService {
 
     String GROUP = "group";
 
+    String ORGANIZATION = "organization";
+
     String VERSION = "version";
 
     String CONSUMER = "consumer";

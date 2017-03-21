@@ -322,6 +322,8 @@ public class Constants {
 
     public static final String  GROUP_KEY                          = "group";
 
+    public static final String  ORGANIZATION_KEY                   = "organization";
+
     public static final String  PATH_KEY                           = "path";
 
     public static final String  INTERFACE_KEY                      = "interface";
