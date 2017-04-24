@@ -50,7 +50,7 @@
 		<module>dubbo</module>
 		<!--<module>dubbo-simple</module>-->
 		<!--<module>dubbo-admin</module>-->
-		<module>dubbo-demo</module>
+		<!--<module>dubbo-demo</module>-->
 		<module>hessian-lite</module>
 	</modules>
 	<profiles>
@@ -79,7 +79,7 @@
 		<httpclient_version>4.3.4</httpclient_version>
 		<hessian_lite_version>3.2.2-SNAPSHOT</hessian_lite_version>
 		<xstream_version>1.4.8</xstream_version>
-		<fastjson_version>1.2.29</fastjson_version>
+		<fastjson_version>1.2.30</fastjson_version>
 		<bsf_version>3.1</bsf_version>
 		<sorcerer_version>0.8</sorcerer_version>
 		<zookeeper_version>3.4.8</zookeeper_version>
@@ -706,4 +706,6 @@
 			<timezone>+8</timezone>
 		</developer>
 	</developers>
+
+
 </project>

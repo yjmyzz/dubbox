@@ -55,11 +55,15 @@
             </plugin>
 
             <plugin>
-                <groupId>org.apache.thrift.tools</groupId>
+                <!--<groupId>org.apache.thrift.tools</groupId>-->
+                <!--<artifactId>maven-thrift-plugin</artifactId>-->
+                <!--<version>0.1.11</version>-->
+                <groupId>de.softwareforge.mojo</groupId>
                 <artifactId>maven-thrift-plugin</artifactId>
-                <version>0.1.11</version>
+                <version>0.1.12</version>
                 <configuration>
-                    <thriftExecutable>/usr/local/bin/thrift</thriftExecutable>
+                    <!--这里改成实际thrift编译器所在的位置-->
+                    <thriftExecutable>/usr/local/Cellar/thrift/0.10.0/bin/thrift</thriftExecutable>
                 </configuration>
                 <executions>
                     <execution>

@@ -1,12 +1,12 @@
 /**
  * Copyright 1999-2014 dangdang.com.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,7 +18,13 @@ package com.alibaba.dubbo.rpc.protocol.rest;
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.common.utils.StringUtils;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson.support.config.FastJsonConfig;
+import com.alibaba.fastjson.support.jaxrs.FastJsonProvider;
 import org.jboss.resteasy.spi.ResteasyDeployment;
+import org.jboss.resteasy.spi.ResteasyProviderFactory;
+
+import java.nio.charset.Charset;
 
 /**
  * @author lishen
@@ -31,6 +37,25 @@ public abstract class BaseRestServer implements RestServer {
 //        server.getDeployment().getMediaTypeMappings().put("xml", "application/xml");
         getDeployment().getProviderClasses().add(RpcContextFilter.class.getName());
         // TODO users can override this mapper, but we just rely on the current priority strategy of resteasy
+
+        String serialization = url.getParameter("serialization");
+        if (StringUtils.isNotEmpty(serialization)) {
+            String charset = url.getParameter("charset", "UTF-8");
+            if (serialization.equals("fastjson")) {
+                getDeployment().setRegisterBuiltin(false);
+                getDeployment().getScannedProviderClasses().clear();
+                FastJsonConfig fastJsonConfig = new FastJsonConfig();
+                fastJsonConfig.setSerializerFeatures(SerializerFeature.DisableCircularReferenceDetect);
+                fastJsonConfig.setCharset(Charset.forName(charset));
+                FastJsonProvider jsonProvider = new FastJsonProvider();
+                jsonProvider.setCharset(Charset.forName(charset));
+                jsonProvider.setFastJsonConfig(fastJsonConfig);
+                ResteasyProviderFactory.getInstance().register(jsonProvider);
+                getDeployment().setProviderFactory(ResteasyProviderFactory.getInstance());
+            }
+        }
+
+
         getDeployment().getProviderClasses().add(RpcExceptionMapper.class.getName());
 
         loadProviders(url.getParameter(Constants.EXTENSION_KEY, ""));
