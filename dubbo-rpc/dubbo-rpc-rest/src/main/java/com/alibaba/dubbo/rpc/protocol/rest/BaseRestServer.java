@@ -38,6 +38,7 @@ public abstract class BaseRestServer implements RestServer {
         getDeployment().getProviderClasses().add(RpcContextFilter.class.getName());
         // TODO users can override this mapper, but we just rely on the current priority strategy of resteasy
 
+        //增加对serialization/charset的解析
         String serialization = url.getParameter("serialization");
         if (StringUtils.isNotEmpty(serialization)) {
             String charset = url.getParameter("charset", "UTF-8");
@@ -51,6 +52,8 @@ public abstract class BaseRestServer implements RestServer {
                 jsonProvider.setCharset(Charset.forName(charset));
                 jsonProvider.setFastJsonConfig(fastJsonConfig);
                 ResteasyProviderFactory.getInstance().register(jsonProvider);
+
+
                 getDeployment().setProviderFactory(ResteasyProviderFactory.getInstance());
             }
         }
